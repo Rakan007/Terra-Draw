@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Sidebar from "./Sidebar/Sidebar";
+import DrawMap from "./Maps/DrawMap";
+import './index.css';
 
-function App() {
+
+const App: React.FC = () => {
+  const [featureCount, setFeatureCount] = useState({
+    points: 0,
+    lines: 0,
+    polygons: 0,
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="flex h-screen bg-gray-900 text-white">
+      {/* Sidebar */}
+      <Sidebar featureCount={featureCount} />
+
+      {/* Map */}
+      <div className="flex-1">
+        <DrawMap setFeatureCount={setFeatureCount} />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
