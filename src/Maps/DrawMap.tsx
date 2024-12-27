@@ -37,7 +37,7 @@ const DrawMap: React.FC<DrawMapProps> = ({ setFeatureCount }) => {
           filter: ["all", ["==", "$type", "LineString"], ["!=", "mode", "static"]],
           layout: { "line-cap": "round", "line-join": "round" },
           paint: {
-            "line-color": ["case", ["boolean", ["feature-state", "hover"], false], "#FF0000", "#000000"],
+            "line-color": ["case", ["boolean", ["feature-state", "hover"], false], "#FF4500", "#32CD32"],
             "line-width": 4,
             "line-opacity": 0.8,
           },
@@ -48,7 +48,7 @@ const DrawMap: React.FC<DrawMapProps> = ({ setFeatureCount }) => {
           filter: ["all", ["==", "$type", "Point"], ["!=", "mode", "static"]],
           paint: {
             "circle-radius": 6,
-            "circle-color": ["case", ["boolean", ["feature-state", "hover"], false], "#000000", "#FF0000"],
+            "circle-color": ["case", ["boolean", ["feature-state", "hover"], false], "#FFFF00", "#1E90FF"],
           },
         },
         {
@@ -56,7 +56,7 @@ const DrawMap: React.FC<DrawMapProps> = ({ setFeatureCount }) => {
           type: "fill",
           filter: ["all", ["==", "$type", "Polygon"], ["!=", "mode", "static"]],
           paint: {
-            "fill-color": "#008000",
+            "fill-color": "#FFD700",
             "fill-opacity": 0.4,
           },
         },
@@ -66,7 +66,7 @@ const DrawMap: React.FC<DrawMapProps> = ({ setFeatureCount }) => {
           filter: ["all", ["==", "$type", "Polygon"], ["!=", "mode", "static"]],
           layout: { "line-cap": "round", "line-join": "round" },
           paint: {
-            "line-color": "#008000",
+            "line-color": "#FF8C00",
             "line-width": 2,
           },
         },
@@ -191,7 +191,7 @@ const DrawMap: React.FC<DrawMapProps> = ({ setFeatureCount }) => {
           "text-anchor": "bottom",
         },
         paint: {
-          "text-color": "#000000",
+          "text-color": "#800080",
           "text-halo-color": "#FFFFFF",
           "text-halo-width": 2,
         },
@@ -209,11 +209,11 @@ const DrawMap: React.FC<DrawMapProps> = ({ setFeatureCount }) => {
         layout: {
           "text-field": ["get", "areaLabel"],
           "text-size": 12,
-          "text-offset": [0, 1.5], 
+          "text-offset": [0, 1.5],
           "text-anchor": "top",
         },
         paint: {
-          "text-color": "#000000",
+          "text-color": "#4B0082",
           "text-halo-color": "#FFFFFF",
           "text-halo-width": 2,
         },

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar/Sidebar";
 import DrawMap from "./Maps/DrawMap";
-import Navbar from "./Navbar/Navbar";
 import './index.css';
 
 const App: React.FC = () => {
