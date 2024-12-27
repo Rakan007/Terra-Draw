@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar/Sidebar";
 import DrawMap from "./Maps/DrawMap";
+import Navbar from "./Navbar/Navbar";
 import './index.css';
-
 
 const App: React.FC = () => {
   const [featureCount, setFeatureCount] = useState({
@@ -12,13 +12,17 @@ const App: React.FC = () => {
   });
 
   return (
-    <div className="flex h-screen bg-gray-900 text-white">
-      {/* Sidebar */}
-      <Sidebar featureCount={featureCount} />
+    <div className="flex flex-col h-screen bg-gray-900 text-white">
+      {/* Navbar */}
 
-      {/* Map */}
-      <div className="flex-1">
-        <DrawMap setFeatureCount={setFeatureCount} />
+      <div className="flex flex-1">
+        {/* Sidebar */}
+        <Sidebar featureCount={featureCount} />
+
+        {/* Map */}
+        <div className="flex-1">
+          <DrawMap setFeatureCount={setFeatureCount} />
+        </div>
       </div>
     </div>
   );
