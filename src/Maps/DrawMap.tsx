@@ -7,9 +7,10 @@ import { Feature, LineString, Polygon, Point } from "geojson";
 
 interface DrawMapProps {
   setFeatureCount: (count: { points: number; lines: number; polygons: number }) => void;
+  selectedItems: { points: boolean; lines: boolean; polygons: boolean };
 }
 
-const DrawMap: React.FC<DrawMapProps> = ({ setFeatureCount }) => {
+const DrawMap: React.FC<DrawMapProps> = ({ setFeatureCount, selectedItems }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const drawRef = useRef<MapboxDraw | null>(null);
@@ -22,15 +23,14 @@ const DrawMap: React.FC<DrawMapProps> = ({ setFeatureCount }) => {
   useEffect(() => {
     const map = new maplibregl.Map({
       container: mapContainer.current!,
-      style: "https://api.maptiler.com/maps/hybrid/style.json?key=NU4TnQJY51sPc4xBLKl3",
-      center: [0, 0],
-      zoom: 2,
+      style: "https://api.maptiler.com/maps/streets/style.json?key=NU4TnQJY51sPc4xBLKl3",
+      center: [107.609810, -6.914744],
+      zoom: 14,
     });
 
     const draw = new MapboxDraw({
       displayControlsDefault: false,
       styles: [
-        // Custom styles for draw tools
         {
           id: "gl-draw-line",
           type: "line",
@@ -223,6 +223,34 @@ const DrawMap: React.FC<DrawMapProps> = ({ setFeatureCount }) => {
     return () => map.remove();
   }, [setFeatureCount]);
 
+  useEffect(() => {
+    const toggleLayerVisibility = (type: "points" | "lines" | "polygons", visible: boolean) => {
+      const map = mapRef.current;
+      if (!map) return;
+  
+      const layerIds: { [key: string]: string[] } = {
+        points: ["gl-draw-point"],
+        lines: ["gl-draw-line", "line-distance-label-layer"],
+        polygons: ["gl-draw-polygon-fill", "gl-draw-polygon-stroke", "polygon-area-label-layer"],
+      };
+  
+      const visibility = visible ? "visible" : "none";
+  
+      layerIds[type].forEach((layerId) => {
+        if (map.getLayer(layerId)) {
+          map.setLayoutProperty(layerId, "visibility", visibility);
+        } else {
+          console.warn(`Layer ${layerId} not found on the map.`);
+        }
+      });
+    };
+  
+    Object.entries(selectedItems).forEach(([type, visible]) => {
+      toggleLayerVisibility(type as "points" | "lines" | "polygons", visible);
+    });
+  }, [selectedItems]);
+  
+
   const handleDrawPoint = () => drawRef.current?.changeMode("draw_point");
   const handleDrawLine = () => drawRef.current?.changeMode("draw_line_string");
   const handleDrawPolygon = () => drawRef.current?.changeMode("draw_polygon");
@@ -260,16 +288,18 @@ const DrawMap: React.FC<DrawMapProps> = ({ setFeatureCount }) => {
         >
           Hapus
         </button>
-        <div className="text-sm text-gray-800">
-          <p>
-            <strong>Total Jarak:</strong> {totalDistance.toFixed(2)} km
-          </p>
-          <p>
-            <strong>Total Area:</strong> {totalArea.toFixed(2)} km²
-          </p>
+      </div>
+      <div
+        ref={mapContainer}
+        className="w-full h-full"
+        style={{ position: "relative", overflow: "hidden" }}
+      />
+      <div className="absolute bottom-4 left-4 z-50 bg-white border border-gray-200 p-6 rounded-lg shadow-lg">
+        <div className="text-sm text-gray-600">
+          <p>Total Jarak: {totalDistance.toFixed(2)} km</p>
+          <p>Total Luas: {(totalArea / 1e6).toFixed(2)} km²</p>
         </div>
       </div>
-      <div ref={mapContainer} className="w-full h-full" />
     </div>
   );
 };
